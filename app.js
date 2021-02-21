@@ -18,17 +18,17 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 // // connect to cloud  database
-mongoose.connect('mongodb+srv://admin-karan:test123@cluster0.qpybj.mongodb.net/blogWebsite',{
-  useNewUrlParser: true,   
-  useUnifiedTopology: true
-});
+// mongoose.connect('mongodb+srv://admin-karan:test123@cluster0.qpybj.mongodb.net/blogWebsite',{
+//   useNewUrlParser: true,   
+//   useUnifiedTopology: true
+// });
 
 // connect to local database
 
-// mongoose.connect('mongodb://localhost:27017/blogDB',{
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true
-// });
+mongoose.connect('mongodb://localhost:27017/blogDB',{
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
 const postSchema = new mongoose.Schema({
   title : String,
