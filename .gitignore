@@ -1,4 +1,4 @@
 node_modules/
 .DS_Store
 ## this is for username and password
-Credential.js
+Credentials.js
