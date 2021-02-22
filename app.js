@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const _ = require("lodash");
 const mongoose = require('mongoose');
+const credentials = require(__dirname + '/Credentials.js');
 
 
 const homeStartingContent = "Lacus vel facilisis volutpat est velit egestas dui id ornare. Semper auctor neque vitae tempus quam. Sit amet cursus sit amet dictum sit amet justo. Viverra tellus in hac habitasse. Imperdiet proin fermentum leo vel orci porta. Donec ultrices tincidunt arcu non sodales neque sodales ut. Mattis molestie a iaculis at erat pellentesque adipiscing. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Ultrices vitae auctor eu augue ut lectus arcu bibendum at. Odio euismod lacinia at quis risus sed vulputate odio ut. Cursus mattis molestie a iaculis at erat pellentesque adipiscing.";
@@ -17,18 +18,18 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-// // connect to cloud  database
-// mongoose.connect('mongodb+srv://admin-karan:test123@cluster0.qpybj.mongodb.net/blogWebsite',{
-//   useNewUrlParser: true,   
-//   useUnifiedTopology: true
-// });
+// connect to cloud  database
+mongoose.connect('mongodb+srv://'+ credentials.Username + ':' + credentials.Password + '@cluster0.qpybj.mongodb.net/blogWebsite',{
+  useNewUrlParser: true,   
+  useUnifiedTopology: true
+});
 
 // connect to local database
 
-mongoose.connect('mongodb://localhost:27017/blogDB',{
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
+// mongoose.connect('mongodb://localhost:27017/blogDB',{
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true
+// });
 
 const postSchema = new mongoose.Schema({
   title : String,
@@ -83,6 +84,51 @@ app.get("/posts/:post_id", function(req, res){
   });
 });
 
+// update
+
+app.get('/update/:post_id',(req,res)=>{
+
+  const requestedPost = req.params.post_id;
+
+  Post.findById(requestedPost,(err,foundPost)=>{
+      res.render('update',{thispost:foundPost});
+
+  });
+
+});
+
+
+app.post('/update/:post_id' , (req,res)=>{
+
+  const requestedPost = req.params.post_id;
+
+  const updatedTitle = req.body.title;
+  const updatedContent = req.body.content;
+
+    Post.findByIdAndUpdate(requestedPost , {title : updatedTitle , content : updatedContent} ,(err,doc)=>{
+     
+      res.redirect('/posts/' + requestedPost);
+    });
+
+
+});
+
+
+// delete post
+app.post('/deletepost/:post_id',(req,res)=>{
+
+  const requestedPost = req.params.post_id;
+
+  Post.findByIdAndRemove(requestedPost , (err)=>{
+      res.redirect('/');
+  });
+
+});
+
+
+
+
 app.listen(3000, function() {
   console.log("Server started on port 3000");
 });
+

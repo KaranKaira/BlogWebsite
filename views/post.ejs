@@ -2,5 +2,10 @@
 
   <h1><%=thispost.title%></h1>
   <p><%=thispost.content%></p>
+  <form action="/deletepost/<%=thispost._id%>" method = 'post'>
+  <button type="submit" class="btn btn-danger" >Delete</button>
+  </form>
+  <br>
+  <a href="../update/<%=thispost._id%>"><button class="btn btn-primary">Update</button></a>
 
 <%- include("partials/footer"); -%>
