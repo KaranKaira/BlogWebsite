@@ -66,8 +66,8 @@ app.get("/compose", function(req, res){
 
 app.post("/compose", function(req, res){
   const newPost = new Post ({
-    title : req.body.postTitle,
-    content : req.body.postBody
+    title : req.body.title,
+    content : req.body.content
   });
   
   newPost.save(()=>{
